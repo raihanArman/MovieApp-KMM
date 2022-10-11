@@ -5,6 +5,8 @@ plugins {
     id("koin")
 }
 
+version = "1.0"
+
 kotlin {
     android()
     iosX64()
@@ -14,11 +16,14 @@ kotlin {
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "14.1"
+        ios.deploymentTarget = "16.0"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "shared"
+            isStatic = false
+            export(project(":common:domain"))
+            export(project(":common:data"))
+            export(project(":libraries:network"))
         }
     }
     
@@ -27,9 +32,9 @@ kotlin {
             dependencies {
                 implementation("io.insert-koin:koin-core:3.1.4")
 
-                implementation(project(mapOf("path" to ":common:domain")))
-                implementation(project(mapOf("path" to ":common:data")))
-                implementation(project(mapOf("path" to ":libraries:network")))
+                api(project(":common:domain"))
+                api(project(":common:data"))
+                api(project(":libraries:network"))
             }
         }
         val commonTest by getting {
@@ -51,7 +56,14 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                api(project(":common:domain"))
+                api(project(":common:data"))
+                api(project(":libraries:network"))
+            }
         }
+
         val iosX64Test by getting
         val iosArm64Test by getting
         val iosSimulatorArm64Test by getting

@@ -1,5 +1,10 @@
 target 'iosApp' do
   use_frameworks!
-  platform :ios, '14.1'
+  platform :ios, '16.0'
   pod 'shared', :path => '../shared'
+#  pod 'KMPNativeCoroutinesAsync'   # Swift 5.5 Async/Await implementation
+  pod 'KMPNativeCoroutinesCombine'  # Combine implementation
+#  pod 'KMPNativeCoroutinesRxSwift'  # RxSwift implementation
+  pod 'netfox'
+  pod 'SDWebImageSwiftUI'
 end
