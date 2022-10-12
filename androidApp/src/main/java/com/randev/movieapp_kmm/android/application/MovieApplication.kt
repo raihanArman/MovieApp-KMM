@@ -1,7 +1,8 @@
-package com.randev.movieapp_kmm.android
+package com.randev.movieapp_kmm.android.application
 
 import android.app.Application
 import com.randev.movieapp_kmm.android.di.featureModule
+import com.randev.movieapp_kmm.android.utils.ContextProvider
 import com.randev.movieapp_kmm.initKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -21,6 +22,8 @@ class MovieApplication: Application() {
             androidLogger(Level.ERROR)
             androidContext(this@MovieApplication)
             modules(featureModule)
+
+            ContextProvider.instance.initialize(applicationContext)
         }
     }
 }

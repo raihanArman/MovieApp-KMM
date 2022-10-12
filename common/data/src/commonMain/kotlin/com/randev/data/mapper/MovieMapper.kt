@@ -11,6 +11,9 @@ import com.randev.domain.model.MovieModel
  * @date 11/10/22
  */
 class MovieMapper: BaseMapper<MovieResponse, MovieModel>() {
+    companion object {
+        const val BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500/"
+    }
     override fun map(value: MovieResponse): MovieModel {
         return MovieModel(
             page = value.page,
@@ -24,7 +27,7 @@ class MovieMapper: BaseMapper<MovieResponse, MovieModel>() {
                     originalTitle = it.originalTitle,
                     overview = it.overview,
                     popularity = it.popularity,
-                    posterPath = it.posterPath,
+                    posterPath = BASE_URL_IMAGE + it.posterPath,
                     releaseDate = it.releaseDate,
                     title = it.title,
                     video = it.video,

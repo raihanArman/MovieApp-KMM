@@ -42,8 +42,8 @@ dependencies {
     implementation("androidx.compose.material:material:1.2.1")
     implementation("androidx.activity:activity-compose:1.5.1")
 
-    // Coil
-//        implementation("io.coil-kt:coil-compose:1.3.2")
+    // Compose Coil
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
     implementation("io.insert-koin:koin-android:3.1.4")
 //    implementation("io.insert-koin:koin-androidx-compose::3.1.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha01")
