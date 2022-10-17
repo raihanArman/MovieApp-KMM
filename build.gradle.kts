@@ -10,12 +10,21 @@ buildscript {
         classpath("io.insert-koin:koin-gradle-plugin:3.1.4")
     }
 }
-
 allprojects {
     repositories {
         google()
         mavenCentral()
         maven(url = "https://jitpack.io")
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + listOf(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=report"
+            )
+        }
     }
 }
 

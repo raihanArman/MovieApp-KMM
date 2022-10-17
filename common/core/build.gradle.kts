@@ -27,14 +27,14 @@ kotlin {
         val commonMain by getting {
             dependencies {
 
-                implementation("io.ktor:ktor-client-core:2.0.0")
+                implementation("io.ktor:ktor-client-core:2.1.1")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
                 implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
                 implementation("io.ktor:ktor-client-logging:2.0.0")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
             }
         }
         val commonTest by getting {

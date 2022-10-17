@@ -17,10 +17,11 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "16.0"
-        podfile = project.file("../iosApp/Podfile")
         framework {
-            baseName = "shared"
+            baseName = "Shared"
             isStatic = false
+            transitiveExport = true
+
             export(project(":common:domain"))
             export(project(":common:data"))
             export(project(":libraries:network"))
@@ -44,7 +45,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                implementation("io.insert-koin:koin-android:3.1.6")
+//                implementation("io.insert-koin:koin-android:3.1.6")
             }
         }
         val androidTest by getting
@@ -55,14 +56,9 @@ kotlin {
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-
-            dependencies {
-                api(project(":common:domain"))
-                api(project(":common:data"))
-                api(project(":libraries:network"))
-            }
         }
+
+        iosSimulatorArm64Main.dependsOn(iosMain)
 
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -77,7 +73,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.randev.movieapp_kmm"
+    namespace = "com.randev.shared"
     compileSdk = 32
     defaultConfig {
         minSdk = 23
