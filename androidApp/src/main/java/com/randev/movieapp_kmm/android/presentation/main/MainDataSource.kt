@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.last
  */
 
 class MainDataSource(
-    private val useCase: GetMovieUseCase
+    private val useCase: GetMovieUseCase,
 ): PagingSource<Int, DataMovieModel>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataMovieModel> {
         val currentPage = params.key ?: 1

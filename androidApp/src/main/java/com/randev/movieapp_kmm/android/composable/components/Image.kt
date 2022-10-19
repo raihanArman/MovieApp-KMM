@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.SubcomposeAsyncImage
+import com.randev.movieapp_kmm.android.R
 import com.randev.movieapp_kmm.android.utils.emptyString
 
 /**
@@ -38,6 +39,9 @@ fun BaseImageView(
         modifier = modifier,
         loading = {
             DefaultLoadingView()
+        },
+        error = {
+            Image(painter = painterResource(id = R.drawable.ic_placeholder), contentDescription = null)
         },
         success = {
             Image(

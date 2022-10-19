@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
@@ -20,12 +21,13 @@ import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
 fun DefaultLoadingView() {
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
             modifier = Modifier
                 .wrapContentSize(),
-            color = MovieAppTheme.colors.colorTextSecondary
+            color = MovieAppTheme.colors.colorPrimary
         )
     }
 }

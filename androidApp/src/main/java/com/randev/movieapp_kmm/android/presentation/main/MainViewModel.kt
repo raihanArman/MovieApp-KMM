@@ -2,10 +2,15 @@ package com.randev.movieapp_kmm.android.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.randev.core.wrapper.Resource
+import com.randev.domain.model.DataMovieModel
 import com.randev.domain.model.MovieModel
 import com.randev.domain.usecase.GetMovieUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,9 +32,9 @@ class MainViewModel(
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    init {
-        getMovie()
-    }
+    val moviesPagination: Flow<PagingData<DataMovieModel>> = Pager(PagingConfig(pageSize = 20)) {
+        MainDataSource(useCase)
+    }.flow
 
     private fun getMovie(){
         viewModelScope.launch {
