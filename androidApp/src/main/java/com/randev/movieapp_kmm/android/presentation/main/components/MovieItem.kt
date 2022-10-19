@@ -1,5 +1,6 @@
 package com.randev.movieapp_kmm.android.presentation.main.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -33,11 +34,15 @@ import com.randev.movieapp_kmm.android.composable.style.Shapes
  * @date 12/10/22
  */
 
+
+const val BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500/"
+
 @Composable
 fun MovieItem(
     modifier: Modifier = Modifier,
     data: DataMovieModel
 ) {
+    Log.d("MovieItem", "MovieItem: $data")
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -52,7 +57,7 @@ fun MovieItem(
         ) {
             BaseImageView(
                 modifier = Modifier.fillMaxSize(),
-                url = data.posterPath
+                url = BASE_URL_IMAGE + data.posterPath
             )
             Surface(
                 modifier = Modifier

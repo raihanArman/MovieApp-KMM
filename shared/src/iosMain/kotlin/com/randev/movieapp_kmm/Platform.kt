@@ -1,4 +1,4 @@
-package com.randev.database
+package com.randev.movieapp_kmm
 
 import platform.UIKit.UIDevice
 

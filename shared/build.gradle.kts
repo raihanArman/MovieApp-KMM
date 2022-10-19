@@ -19,12 +19,13 @@ kotlin {
         ios.deploymentTarget = "16.0"
         framework {
             baseName = "Shared"
-            isStatic = false
-            transitiveExport = true
+//            isStatic = false
+//            transitiveExport = true
 
             export(project(":common:domain"))
             export(project(":common:data"))
             export(project(":libraries:network"))
+            export(project(":libraries:database"))
         }
     }
     
@@ -36,6 +37,7 @@ kotlin {
                 api(project(":common:domain"))
                 api(project(":common:data"))
                 api(project(":libraries:network"))
+                api(project(":libraries:database"))
             }
         }
         val commonTest by getting {

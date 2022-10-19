@@ -6,3 +6,5 @@ package com.randev.movieapp_kmm.android.utils
  */
 
 fun emptyString() = ""
+
+

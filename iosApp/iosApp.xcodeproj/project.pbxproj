@@ -9,32 +9,17 @@
 /* Begin PBXBuildFile section */
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
-		1862DADB28FDA1900030C53E /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1862DADA28FDA1900030C53E /* Shared.framework */; };
-		1862DADC28FDA1900030C53E /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1862DADA28FDA1900030C53E /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
-		8B9C21A18DD5FEC0629FFA07 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57656EC1D1D6422CFCAD57CD /* Pods_iosApp.framework */; };
+		D2E4403F1EDB9F4EC81A6338 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57656EC1D1D6422CFCAD57CD /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		1862DADD28FDA1900030C53E /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				1862DADC28FDA1900030C53E /* Shared.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		082D3EADAF1509DC0D2891E4 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
 		1862DADA28FDA1900030C53E /* Shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Shared.framework; path = ../shared/build/cocoapods/framework/Shared.framework; sourceTree = "<group>"; };
+		1862DAE128FDA2EA0030C53E /* Shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		545C4394B8CB96C4F10B2155 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 		57656EC1D1D6422CFCAD57CD /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,8 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B9C21A18DD5FEC0629FFA07 /* Pods_iosApp.framework in Frameworks */,
-				1862DADB28FDA1900030C53E /* Shared.framework in Frameworks */,
+				D2E4403F1EDB9F4EC81A6338 /* Pods_iosApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +90,7 @@
 		AD553B663793C68BB0C5F1FF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1862DAE128FDA2EA0030C53E /* Shared.framework */,
 				1862DADA28FDA1900030C53E /* Shared.framework */,
 				57656EC1D1D6422CFCAD57CD /* Pods_iosApp.framework */,
 			);
@@ -124,8 +109,6 @@
 				7555FF79242A565900829871 /* Resources */,
 				30EF7E17F0FEC049C4954F11 /* Frameworks */,
 				33F0EEB490FE384DA49D8F1B /* [CP] Embed Pods Frameworks */,
-				1862DAD928FDA14B0030C53E /* ShellScript */,
-				1862DADD28FDA1900030C53E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -182,23 +165,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1862DAD928FDA14B0030C53E /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}\n";
-		};
 		33F0EEB490FE384DA49D8F1B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -210,8 +176,6 @@
 				"${BUILT_PRODUCTS_DIR}/KMPNativeCoroutinesCore/KMPNativeCoroutinesCore.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageSwiftUI/SDWebImageSwiftUI.framework",
-				"${PODS_ROOT}/../../shared/build/cocoapods/framework/Shared.framework",
-				"${PODS_ROOT}/../../shared/build/cocoapods/framework/Shared.framework.dSYM",
 				"${BUILT_PRODUCTS_DIR}/Shared/Shared.framework",
 				"${BUILT_PRODUCTS_DIR}/netfox/netfox.framework",
 			);
@@ -222,7 +186,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageSwiftUI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Shared.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/Shared.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/netfox.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,7 +352,6 @@
 				DEVELOPMENT_TEAM = 3GPBYHJALT;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/KMPNativeCoroutinesCombine\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/KMPNativeCoroutinesCore\"",
@@ -420,7 +382,6 @@
 				DEVELOPMENT_TEAM = 3GPBYHJALT;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/KMPNativeCoroutinesCombine\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/KMPNativeCoroutinesCore\"",

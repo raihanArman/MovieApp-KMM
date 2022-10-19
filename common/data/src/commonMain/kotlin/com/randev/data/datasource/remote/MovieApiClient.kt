@@ -1,4 +1,4 @@
-package com.randev.data.remote
+package com.randev.data.datasource.remote
 
 import com.randev.data.response.MovieResponse
 
@@ -8,5 +8,5 @@ import com.randev.data.response.MovieResponse
  */
 
 interface MovieApiClient {
-    suspend fun fetchMovie(): MovieResponse
+    suspend fun fetchMovie(page: Int): MovieResponse
 }

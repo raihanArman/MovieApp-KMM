@@ -1,4 +1,4 @@
-package com.randev.database
+package com.randev.movieapp_kmm
 
 interface Platform {
     val name: String

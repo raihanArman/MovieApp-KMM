@@ -23,11 +23,10 @@ abstract class NetworkResource<T>() {
                 is ResultWrapper.Success -> {
                     if (shouldFetchRemoteAndSaveLocal()) {
                         remoteResponse.value?.let {
-                            val localData = withContext(Dispatchers.Default) {
+                            withContext(Dispatchers.Default) {
                                 saveLocal(it)
-                                localFetch()
                             }
-                            emit(Resource.Success(model = localData))
+                            emit(Resource.Success(model = remoteResponse.value))
                         }
                     } else {
                         emit(Resource.Success(model = remoteResponse.value))

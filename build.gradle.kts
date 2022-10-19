@@ -1,4 +1,6 @@
 buildscript {
+    val kotlinVersion: String by project
+
     repositories {
         gradlePluginPortal()
         google()
@@ -8,6 +10,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
         classpath("com.android.tools.build:gradle:7.2.1")
         classpath("io.insert-koin:koin-gradle-plugin:3.1.4")
+        classpath("com.squareup.sqldelight:gradle-plugin:1.5.4")
     }
 }
 allprojects {

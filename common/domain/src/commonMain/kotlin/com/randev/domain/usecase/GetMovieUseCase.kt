@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.Flow
 
 class GetMovieUseCase(
     private val repository: MovieRepository
-): FlowUseCase<Nothing?, MovieModel>(){
-    override suspend fun execute(parameters: Nothing?): Flow<Resource<MovieModel>> {
-        return repository.getMovie()
+): FlowUseCase<Int?, MovieModel>(){
+    override suspend fun execute(parameters: Int?): Flow<Resource<MovieModel>> {
+        return repository.getMovie(parameters ?: 0)
     }
 }

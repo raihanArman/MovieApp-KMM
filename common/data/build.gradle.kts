@@ -43,6 +43,7 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
                 implementation(project(mapOf("path" to ":common:core")))
                 implementation(project(mapOf("path" to ":common:domain")))
+                implementation(project(mapOf("path" to ":libraries:database")))
             }
         }
         val commonTest by getting {

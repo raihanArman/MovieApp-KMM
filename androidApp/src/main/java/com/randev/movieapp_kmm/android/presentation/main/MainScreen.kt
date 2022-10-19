@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -21,10 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.randev.core.wrapper.Resource
 import com.randev.domain.model.DataMovieModel
 import com.randev.domain.model.MovieModel
 import com.randev.movieapp_kmm.android.presentation.main.components.MovieItem
+import com.randev.movieapp_kmm.android.utils.items
 import kotlinx.coroutines.flow.collectLatest
 
 /**
@@ -37,7 +42,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun MainScreen(
     viewModel: MainViewModel
 ) {
-    val mainState by viewModel.observeMovieState.collectAsState()
+    val lazyMovieList = viewModel.moviesPagination.collectAsLazyPagingItems()
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
@@ -60,11 +65,12 @@ fun MainScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            if(mainState.isLoading) {
-                ShowProgressCircular()
-            } else {
-                ContentMovie(data = mainState.movieList)
-            }
+//            if(mainState.isLoading) {
+//                ShowProgressCircular()
+//            } else {
+//                ContentMovie(data = mainState.movieList)
+//            }
+            ContentMovie(data = lazyMovieList)
         }
     }
 }
@@ -83,7 +89,7 @@ fun ShowProgressCircular() {
 @Composable
 fun ContentMovie(
     modifier: Modifier = Modifier,
-    data: List<DataMovieModel>
+    data: LazyPagingItems<DataMovieModel>
 ) {
     LazyVerticalGrid(
         modifier = modifier
@@ -92,8 +98,10 @@ fun ContentMovie(
         verticalArrangement = Arrangement.spacedBy(18.dp),
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-        items(data){ movie ->
-            MovieItem(data = movie)
+        items(data) { movie ->
+            movie?.let {
+                MovieItem(data = it)
+            }
         }
     }
 }

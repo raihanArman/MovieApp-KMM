@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
                 
                 
     spec.pod_target_xcconfig = {
-        'KOTLIN_PROJECT_PATH' => ':common:preferences',
+        'KOTLIN_PROJECT_PATH' => ':libraries:preferences',
         'PRODUCT_MODULE_NAME' => 'preferences',
     }
                 

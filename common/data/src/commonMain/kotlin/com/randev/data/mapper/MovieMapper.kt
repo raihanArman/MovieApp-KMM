@@ -5,6 +5,7 @@ import com.randev.data.response.MovieResponse
 import com.randev.data.response.MovieResultResponse
 import com.randev.domain.model.DataMovieModel
 import com.randev.domain.model.MovieModel
+import com.randev.movieappkmm.db.MovieEntity
 
 /**
  * @author Raihan Arman
@@ -12,26 +13,25 @@ import com.randev.domain.model.MovieModel
  */
 class MovieMapper: BaseMapper<MovieResponse, MovieModel>() {
     companion object {
-        const val BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500/"
     }
     override fun map(value: MovieResponse): MovieModel {
         return MovieModel(
             page = value.page,
             results = value.results.map {
                 DataMovieModel(
-                    adult = it.adult,
-                    backdropPath = it.backdropPath,
+                    adult = it.adult ?: false,
+                    backdropPath = it.backdropPath.orEmpty(),
                     genreIds = it.genreIds,
-                    id = it.id,
-                    originalLanguage = it.originalLanguage,
-                    originalTitle = it.originalTitle,
-                    overview = it.overview,
-                    popularity = it.popularity,
-                    posterPath = BASE_URL_IMAGE + it.posterPath,
-                    releaseDate = it.releaseDate,
-                    title = it.title,
-                    video = it.video,
-                    voteAverage = it.voteAverage,
+                    id = it.id ?: 0,
+                    originalLanguage = it.originalLanguage.orEmpty(),
+                    originalTitle = it.originalTitle.orEmpty(),
+                    overview = it.overview.orEmpty(),
+                    popularity = it.popularity ?: 0.0,
+                    posterPath = it.posterPath.orEmpty(),
+                    releaseDate = it.releaseDate.orEmpty(),
+                    title = it.title.orEmpty(),
+                    video = it.video ?: false,
+                    voteAverage = it.voteAverage ?: 0.0,
                 )
             },
             totalPages = value.totalPages,
@@ -39,3 +39,27 @@ class MovieMapper: BaseMapper<MovieResponse, MovieModel>() {
         )
     }
 }
+
+fun DataMovieModel.mapToMovieEntity() = MovieEntity(
+    id = this.id.toLong(),
+    title = this.originalTitle,
+    poster = this.posterPath,
+    overview = this.overview,
+    releaseDate = this.releaseDate
+)
+
+fun MovieEntity.mapToDataMovieModel() = DataMovieModel(
+    adult = false,
+    backdropPath = "",
+    genreIds = emptyList(),
+    id = this.id.toInt(),
+    originalLanguage = "",
+    originalTitle = this.title,
+    overview = this.overview,
+    popularity = 0.0,
+    posterPath = this.poster,
+    releaseDate = this.releaseDate,
+    title = "",
+    video = false,
+    voteAverage = 0.0,
+)

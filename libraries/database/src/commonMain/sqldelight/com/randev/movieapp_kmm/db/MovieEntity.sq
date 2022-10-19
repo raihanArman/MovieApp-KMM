@@ -1,0 +1,26 @@
+CREATE TABLE MovieEntity(
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    poster TEXT NOT NULL,
+    overview TEXT NOT NULL,
+    releaseDate TEXT NOT NULL
+);
+
+insertItem:
+INSERT OR REPLACE INTO
+MovieEntity(id, title, poster, overview, releaseDate)
+VALUES (?, ?, ?, ?, ?);
+
+selectMovieAll:
+SELECT *
+FROM MovieEntity;
+
+selectMovieById:
+SELECT *
+FROM MovieEntity WHERE id=:id;
+
+deleteMovieAll:
+DELETE FROM MovieEntity;
+
+deleteMovieById:
+DELETE FROM MovieEntity WHERE id=:id;

@@ -1,6 +1,6 @@
 package com.randev.data.di
 
-import com.randev.data.remote.MovieApi
+import com.randev.data.datasource.remote.MovieApi
 import org.koin.dsl.module
 
 /**
