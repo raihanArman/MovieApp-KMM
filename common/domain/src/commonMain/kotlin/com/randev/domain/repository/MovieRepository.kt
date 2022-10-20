@@ -1,8 +1,8 @@
 package com.randev.domain.repository
 
-import com.randev.core.DataResource
 import com.randev.core.wrapper.Resource
-import com.randev.domain.model.MovieModel
+import com.randev.domain.model.movie_detail.MovieDetailModel
+import com.randev.domain.model.movie_list.MovieModel
 import kotlinx.coroutines.flow.Flow
 
 

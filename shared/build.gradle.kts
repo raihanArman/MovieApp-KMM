@@ -32,7 +32,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.insert-koin:koin-core:3.1.4")
+                implementation("io.insert-koin:koin-core:3.2.2")
 
                 api(project(":common:domain"))
                 api(project(":common:data"))

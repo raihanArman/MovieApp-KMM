@@ -1,4 +1,4 @@
-package com.randev.movieapp_kmm.android.composable.components
+package com.randev.movieapp_kmm.android.composable.components.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -7,6 +7,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.SubcomposeAsyncImage
 import com.randev.movieapp_kmm.android.R
+import com.randev.movieapp_kmm.android.composable.components.image.DefaultLoadingView
 import com.randev.movieapp_kmm.android.utils.emptyString
 
 /**

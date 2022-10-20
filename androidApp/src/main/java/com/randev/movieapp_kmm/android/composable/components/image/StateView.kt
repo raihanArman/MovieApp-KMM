@@ -1,4 +1,4 @@
-package com.randev.movieapp_kmm.android.composable.components
+package com.randev.movieapp_kmm.android.composable.components.image
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

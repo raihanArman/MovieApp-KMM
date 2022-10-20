@@ -1,10 +1,9 @@
 package com.randev.data.mapper
 
 import com.randev.core.arch.BaseMapper
-import com.randev.data.response.MovieResponse
-import com.randev.data.response.MovieResultResponse
-import com.randev.domain.model.DataMovieModel
-import com.randev.domain.model.MovieModel
+import com.randev.data.response.movie_list.MovieResponse
+import com.randev.domain.model.movie_list.DataMovieModel
+import com.randev.domain.model.movie_list.MovieModel
 import com.randev.movieappkmm.db.MovieEntity
 
 /**
@@ -12,8 +11,6 @@ import com.randev.movieappkmm.db.MovieEntity
  * @date 11/10/22
  */
 class MovieMapper: BaseMapper<MovieResponse, MovieModel>() {
-    companion object {
-    }
     override fun map(value: MovieResponse): MovieModel {
         return MovieModel(
             page = value.page,

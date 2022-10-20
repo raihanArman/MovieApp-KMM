@@ -1,4 +1,4 @@
-package com.randev.domain.model
+package com.randev.domain.model.movie_list
 
 /**
  * @author Raihan Arman

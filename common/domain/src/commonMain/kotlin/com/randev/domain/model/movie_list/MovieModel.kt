@@ -1,6 +1,4 @@
-package com.randev.domain.model
-
-import kotlinx.serialization.SerialName
+package com.randev.domain.model.movie_list
 
 /**
  * @author Raihan Arman

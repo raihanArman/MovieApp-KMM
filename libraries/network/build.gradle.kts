@@ -26,7 +26,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("io.realm.kotlin:library-base:0.11.1")
-                implementation("io.insert-koin:koin-core:3.1.4")
+                implementation("io.insert-koin:koin-core:3.2.2")
 
                 implementation("io.ktor:ktor-client-core:2.1.1")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
@@ -52,7 +52,7 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-okhttp:2.0.0")
                 implementation("io.ktor:ktor-client-android:2.0.0")
-                implementation("io.insert-koin:koin-android:3.1.6")
+                implementation("io.insert-koin:koin-android:3.2.2")
                 implementation("com.github.chuckerteam.chucker:library:3.5.2")
             }
         }

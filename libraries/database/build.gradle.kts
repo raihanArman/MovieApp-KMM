@@ -27,7 +27,7 @@ kotlin {
             dependencies {
                 implementation("com.squareup.sqldelight:runtime:1.5.4")
                 implementation("com.squareup.sqldelight:coroutines-extensions:1.5.4")
-                implementation("io.insert-koin:koin-core:3.1.4")
+                implementation("io.insert-koin:koin-core:3.2.2")
 
                 implementation("io.ktor:ktor-client-core:2.1.1")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")

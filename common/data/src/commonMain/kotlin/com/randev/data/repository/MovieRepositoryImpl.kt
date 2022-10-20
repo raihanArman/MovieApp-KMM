@@ -6,12 +6,13 @@ import com.randev.core.wrapper.Resource
 import com.randev.data.datasource.local.MovieDataSource
 import com.randev.data.mapper.MovieMapper
 import com.randev.data.datasource.remote.MovieApi
+import com.randev.data.mapper.MovieDetailMapper
 import com.randev.data.mapper.mapToDataMovieModel
 import com.randev.data.mapper.mapToMovieEntity
-import com.randev.domain.model.MovieModel
+import com.randev.domain.model.movie_detail.MovieDetailModel
+import com.randev.domain.model.movie_list.MovieModel
 import com.randev.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 /**
  * @author Raihan Arman

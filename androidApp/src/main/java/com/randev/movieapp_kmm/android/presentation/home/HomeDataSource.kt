@@ -1,14 +1,10 @@
-package com.randev.movieapp_kmm.android.presentation.main
+package com.randev.movieapp_kmm.android.presentation.home
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.randev.core.wrapper.Resource
-import com.randev.domain.model.DataMovieModel
-import com.randev.domain.model.MovieModel
+import com.randev.domain.model.movie_list.DataMovieModel
 import com.randev.domain.usecase.GetMovieUseCase
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.last
 
 /**
@@ -16,7 +12,7 @@ import kotlinx.coroutines.flow.last
  * @date 19/10/22
  */
 
-class MainDataSource(
+class HomeDataSource(
     private val useCase: GetMovieUseCase,
 ): PagingSource<Int, DataMovieModel>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataMovieModel> {

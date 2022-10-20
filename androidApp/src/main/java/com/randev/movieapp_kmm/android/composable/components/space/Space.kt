@@ -1,4 +1,4 @@
-package com.randev.movieapp_kmm.android.composable.components
+package com.randev.movieapp_kmm.android.composable.components.space
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height

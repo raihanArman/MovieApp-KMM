@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("koin")
+    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
 }
 
 android {
@@ -29,12 +31,20 @@ android {
             isMinifyEnabled = false
         }
     }
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
     implementation(project(":shared"))
     implementation(project(":common:core"))
     implementation(project(":common:domain"))
+    implementation(project(":common:navigation"))
     implementation("androidx.compose.ui:ui:1.2.1")
     implementation("androidx.compose.ui:ui-tooling:1.2.1")
     implementation("androidx.compose.ui:ui-tooling-preview:1.2.1")
@@ -45,10 +55,15 @@ dependencies {
     //Paging
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
+    // Compose Navigation
+    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
     // Compose Coil
     implementation("io.coil-kt:coil-compose:2.0.0-rc01")
-    implementation("io.insert-koin:koin-android:3.1.4")
+//    implementation("io.insert-koin:koin-core:3.1.4")
+//
+//    implementation("io.insert-koin:koin-android:3.1.4")
+    implementation("io.insert-koin:koin-androidx-compose:3.2.2")
 //    implementation("io.insert-koin:koin-androidx-compose::3.1.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha01")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha01")

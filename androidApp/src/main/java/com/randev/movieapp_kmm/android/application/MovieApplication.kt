@@ -4,6 +4,7 @@ import android.app.Application
 import com.randev.movieapp_kmm.android.di.featureModule
 import com.randev.movieapp_kmm.android.utils.ContextProvider
 import com.randev.movieapp_kmm.initKoin
+import com.randev.navigation.navigatorModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.logger.Level
@@ -21,7 +22,10 @@ class MovieApplication: Application() {
         initKoin {
             androidLogger(Level.ERROR)
             androidContext(this@MovieApplication)
-            modules(featureModule)
+            modules(
+                navigatorModule,
+                featureModule,
+            )
 
             ContextProvider.instance.initialize(applicationContext)
         }

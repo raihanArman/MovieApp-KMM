@@ -1,106 +1,92 @@
 package com.randev.movieapp_kmm.android.presentation.main
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import android.app.Activity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-import com.randev.core.wrapper.Resource
-import com.randev.domain.model.DataMovieModel
-import com.randev.domain.model.MovieModel
-import com.randev.movieapp_kmm.android.presentation.main.components.MovieItem
-import com.randev.movieapp_kmm.android.utils.items
-import kotlinx.coroutines.flow.collectLatest
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
+import com.randev.movieapp_kmm.android.presentation.detail.DetailScreen
+import com.randev.movieapp_kmm.android.presentation.home.HomeScreen
+import com.randev.navigation.Destination
+import com.randev.navigation.NavHostApp
+import com.randev.navigation.NavigationIntent
+import com.randev.navigation.composable
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import org.koin.androidx.compose.getViewModel
 
 /**
  * @author Raihan Arman
- * @date 11/10/22
+ * @date 19/10/22
  */
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel
+    mainViewModel: MainViewModel = getViewModel()
 ) {
-    val lazyMovieList = viewModel.moviesPagination.collectAsLazyPagingItems()
-    val scaffoldState = rememberScaffoldState()
+    val navController = rememberNavController()
 
-    LaunchedEffect(key1 = true) {
-        viewModel.eventFlow.collectLatest { event ->
-            when(event) {
-                is MainViewModel.UIEvent.ShowSnackbar -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.message
-                    )
+    NavigationEffects(
+        navigationChannel = mainViewModel.navigationChannel,
+        navHostController = navController
+    )
+
+    MovieAppTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+            NavHostApp(
+                navController = navController,
+                startDestination = Destination.HomeScreen
+            ) {
+                composable(destination = Destination.HomeScreen) {
+                    HomeScreen()
+                }
+                composable(destination = Destination.DetailsScreen) {
+                    DetailScreen()
                 }
             }
         }
     }
 
-    Scaffold(
-        scaffoldState = scaffoldState
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-//            if(mainState.isLoading) {
-//                ShowProgressCircular()
-//            } else {
-//                ContentMovie(data = mainState.movieList)
-//            }
-            ContentMovie(data = lazyMovieList)
-        }
-    }
 }
 
 @Composable
-fun ShowProgressCircular() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun ContentMovie(
-    modifier: Modifier = Modifier,
-    data: LazyPagingItems<DataMovieModel>
+fun NavigationEffects(
+    navigationChannel: Channel<NavigationIntent>,
+    navHostController: NavHostController
 ) {
-    LazyVerticalGrid(
-        modifier = modifier
-            .padding(25.dp),
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-        horizontalArrangement = Arrangement.spacedBy(15.dp)
-    ) {
-        items(data) { movie ->
-            movie?.let {
-                MovieItem(data = it)
+    val activity = (LocalContext.current as? Activity)
+    LaunchedEffect(activity, navHostController, navigationChannel) {
+        navigationChannel.receiveAsFlow().collect { intent ->
+            if (activity?.isFinishing == true){
+                return@collect
+            }
+            when(intent) {
+                is NavigationIntent.NavigateBack -> {
+                    if (intent.route != null) {
+                        navHostController.popBackStack(intent.route!!, intent.inclusive)
+                    } else {
+                        navHostController.popBackStack()
+                    }
+                }
+                is NavigationIntent.NavigateTo -> {
+                    navHostController.navigate(intent.route) {
+                        launchSingleTop = intent.isSingleTop
+                        intent.popUpToRoute?.let { popUpToRoute ->
+                            popUpTo(popUpToRoute){
+                                inclusive = intent.inclusive
+                            }
+                        }
+                    }
+                }
             }
         }
     }

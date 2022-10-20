@@ -1,4 +1,4 @@
-package com.randev.data.response
+package com.randev.data.response.movie_list
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -19,4 +19,4 @@ data class MovieResponse(
     @SerialName("total_results")
     val totalResults: Int,
 
-)
+    )

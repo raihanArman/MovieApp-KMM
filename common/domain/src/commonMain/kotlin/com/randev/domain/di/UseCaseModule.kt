@@ -1,5 +1,6 @@
 package com.randev.domain.di
 
+import com.randev.domain.usecase.GetMovieDetailUseCase
 import com.randev.domain.usecase.GetMovieUseCase
 import org.koin.dsl.module
 
@@ -10,4 +11,5 @@ import org.koin.dsl.module
 
 val useCaseModule = module {
     single { GetMovieUseCase(get()) }
+    single { GetMovieDetailUseCase(get()) }
 }
