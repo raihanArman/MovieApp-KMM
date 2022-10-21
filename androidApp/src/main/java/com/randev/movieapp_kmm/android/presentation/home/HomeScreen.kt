@@ -81,8 +81,8 @@ fun ContentMovie(
         modifier = modifier
             .padding(25.dp),
         columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-        horizontalArrangement = Arrangement.spacedBy(15.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(data) { movie ->
             movie?.let {

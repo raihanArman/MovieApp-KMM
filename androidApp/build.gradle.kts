@@ -59,7 +59,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
     // Compose Coil
-    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 //    implementation("io.insert-koin:koin-core:3.1.4")
 //
 //    implementation("io.insert-koin:koin-android:3.1.4")

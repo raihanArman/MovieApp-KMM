@@ -45,6 +45,6 @@ class HomeDataSource(
         }
     }
     override fun getRefreshKey(state: PagingState<Int, DataMovieModel>): Int? {
-        return state.anchorPosition
+        return null
     }
 }

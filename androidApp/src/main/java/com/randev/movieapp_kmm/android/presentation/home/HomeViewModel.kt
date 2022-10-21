@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.randev.core.wrapper.Resource
 import com.randev.domain.model.movie_list.DataMovieModel
 import com.randev.domain.usecase.GetMovieUseCase
@@ -13,8 +14,11 @@ import com.randev.navigation.Destination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -35,7 +39,7 @@ class HomeViewModel(
 
     val moviesPagination: Flow<PagingData<DataMovieModel>> = Pager(PagingConfig(pageSize = 20)) {
         HomeDataSource(useCase)
-    }.flow
+    }.flow.cachedIn(viewModelScope)
 
     fun onNavigateToDetailsClicked(id: Int) {
         appNavigator.tryNavigateTo(
@@ -47,7 +51,7 @@ class HomeViewModel(
 
     private fun getMovie(){
         viewModelScope.launch {
-            useCase.invoke().collect { viewState ->
+            useCase.invoke().onEach { viewState ->
                 when(viewState) {
                     is Resource.Error -> {
                         _observeMovieState.update {
@@ -79,7 +83,7 @@ class HomeViewModel(
                     }
                     else -> {}
                 }
-            }
+            }.stateIn(this, SharingStarted.Eagerly, Resource.Idle())
         }
     }
 

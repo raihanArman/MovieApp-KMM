@@ -29,7 +29,8 @@ import com.randev.movieapp_kmm.android.composable.style.Shapes
  */
 
 
-const val BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500/"
+const val BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w780/"
+const val BASE_URL_BACKDROP_IMAGE = "https://image.tmdb.org/t/p/w1280"
 
 @Composable
 fun MovieItem(
@@ -46,7 +47,7 @@ fun MovieItem(
                 onClick(data.id)
             },
         elevation = 0.dp,
-        shape = Shapes.large,
+        shape = Shapes.small,
     ) {
         Box(
             modifier = Modifier
