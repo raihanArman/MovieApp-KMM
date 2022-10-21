@@ -12,3 +12,9 @@ sealed class Resource<out T> {
     object Loading : Resource<Nothing>()
     object None : Resource<Nothing>()
 }
+
+
+fun <T, E>Resource<T>.convertToModel(
+    convert: (E) -> Unit
+) {
+}

@@ -16,7 +16,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
@@ -25,8 +28,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
@@ -50,6 +55,8 @@ import com.randev.movieapp_kmm.android.composable.components.image.BaseImageView
 import com.randev.movieapp_kmm.android.composable.components.progressCircular.ProgressCircularComponent
 import com.randev.movieapp_kmm.android.composable.components.space.VerticalSpacer
 import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
+import com.randev.movieapp_kmm.android.presentation.detail.components.CastItem
+import com.randev.movieapp_kmm.android.presentation.detail.components.GenreItem
 import com.randev.movieapp_kmm.android.presentation.home.components.BASE_URL_BACKDROP_IMAGE
 import com.randev.movieapp_kmm.android.presentation.home.components.BASE_URL_IMAGE
 import com.randev.movieapp_kmm.android.utils.currentSheetFraction
@@ -72,13 +79,8 @@ fun DetailScreen(
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
-        
-        if(detailState.isLoading) {
-            ProgressCircularComponent()
-        } else {
-            detailState.movieDetail?.let { 
-                ContentMovieDetail(data = it)
-            }
+        ContentMovieDetail(state = detailState) {
+            viewModel.onBackButtonClicked()
         }
     }
 }
@@ -87,7 +89,8 @@ fun DetailScreen(
 @Composable
 fun ContentMovieDetail(
     modifier: Modifier = Modifier,
-    data: MovieDetailModel
+    state: DetailState,
+    onCloseClicked: () -> Unit
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
@@ -113,14 +116,14 @@ fun ContentMovieDetail(
         sheetPeekHeight = 450.dp,
         sheetContent = {
             BottomSheetContent(
-                data = data,
+                state = state,
             )
         },
         content = {
             BackgroundContent(
-                image = data.backdropPath,
+                state = state,
                 imageFraction = { currentSheetFraction },
-                onCloseClicked = {}
+                onCloseClicked = onCloseClicked
             )
         }
     )
@@ -135,7 +138,7 @@ fun WrappedColumn(
 }
 
 @Composable
-fun BottomSheetContent(data: MovieDetailModel) {
+fun BottomSheetContent(state: DetailState) {
 
     WrappedColumn(
         modifier = Modifier
@@ -144,71 +147,135 @@ fun BottomSheetContent(data: MovieDetailModel) {
             .padding(25.dp)
             .verticalScroll(rememberScrollState()),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+        state.movieDetail?.let { data ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = data.originalTitle,
+                    style = MovieAppTheme.typography.bold,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+                IconButton(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(0.dp),
+                    onClick = {}
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = null
+                    )
+                }
+            }
+            VerticalSpacer(height = 20.dp)
             Text(
-                text = data.originalTitle,
+                text = "Overview",
                 style = MovieAppTheme.typography.bold,
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 color = Color.Black
             )
-            IconButton(
-                modifier = Modifier
-                    .size(24.dp)
-                    .padding(0.dp),
-                onClick = {}
+            VerticalSpacer(height = 10.dp)
+            Text(
+                text = data.overview,
+                style = MovieAppTheme.typography.medium,
+                fontSize = 16.sp,
+                color = Color.Gray
+            )
+            VerticalSpacer(height = 20.dp)
+            Text(
+                text = "Genre",
+                style = MovieAppTheme.typography.bold,
+                fontSize = 16.sp,
+                color = Color.Black
+            )
+            VerticalSpacer(height = 10.dp)
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = null
-                )
+                items(data.genres) {
+                    it?.let {
+                        GenreItem(genre = it)
+                    }
+                }
             }
         }
-        VerticalSpacer(height = 20.dp)
-        Text(
-            text = "Overview",
-            style = MovieAppTheme.typography.bold,
-            fontSize = 16.sp,
-            color = Color.Black
-        )
-        VerticalSpacer(height = 10.dp)
-        Text(
-            text = data.overview,
-            style = MovieAppTheme.typography.medium,
-            fontSize = 16.sp,
-            color = Color.Gray
-        )
+
+        state.castList?.let {  casts ->
+            VerticalSpacer(height = 30.dp)
+            Text(
+                text = "Cast",
+                style = MovieAppTheme.typography.bold,
+                fontSize = 16.sp,
+                color = Color.Black
+            )
+            VerticalSpacer(height = 10.dp)
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(casts) {
+                    CastItem(cast = it)
+                }
+            }
+        }
+
+        if (state.isLoading) {
+            ProgressCircularComponent()
+        }
 
     }
 }
 
 @Composable
 fun BackgroundContent(
-    image: String,
+    state: DetailState,
     imageFraction: () -> Float = {1f},
     backgroundColor: Color = MaterialTheme.colors.surface,
     onCloseClicked: () -> Unit
 ) {
-
-    val imageUrl = "$BASE_URL_BACKDROP_IMAGE${image}"
-
-    Log.d("Ampas Kuda", "BackgroundContent: $imageUrl")
-
     WrapperBox(
         modifier = Modifier
             .height(330.dp)
     ) {
-        BaseImageView(
-            url = imageUrl,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(imageFraction.invoke() + 0.4f)
-                .align(Alignment.TopStart),
-            contentScale = ContentScale.Crop
-        )
+        state.movieDetail?.let {
+
+            val imageUrl = "$BASE_URL_BACKDROP_IMAGE${it.backdropPath}"
+            BaseImageView(
+                url = imageUrl,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(imageFraction.invoke() + 0.4f)
+                    .align(Alignment.TopStart),
+                contentScale = ContentScale.Crop
+            )
+
+            Box(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(25.dp)
+            ) {
+                Surface(
+                    shape = CircleShape,
+                    color = Color.Black.copy(alpha = 0.2f)
+                ) {
+                    IconButton(
+                        onClick = onCloseClicked,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(5.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                }
+            }
+
+        }
     }
 
 }

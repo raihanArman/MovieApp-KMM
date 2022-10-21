@@ -1,5 +1,6 @@
 package com.randev.data.di
 
+import com.randev.data.mapper.MovieCreditsMapper
 import com.randev.data.mapper.MovieDetailMapper
 import com.randev.data.mapper.MovieMapper
 import org.koin.dsl.module
@@ -12,4 +13,5 @@ import org.koin.dsl.module
 val mapperModule = module {
     single { MovieMapper() }
     single { MovieDetailMapper() }
+    single { MovieCreditsMapper() }
 }

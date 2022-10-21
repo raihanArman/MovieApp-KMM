@@ -13,12 +13,13 @@ import org.koin.dsl.module
 
 val featureModule = module {
     viewModel { MainViewModel(get()) }
-    viewModel { HomeViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { params ->
         DetailViewModel(
             appNavigator = get(),
             stateHandle = params.get(),
-            useCase = get()
+            detailUseCase = get(),
+            creditsUseCase = get()
         )
     }
 }

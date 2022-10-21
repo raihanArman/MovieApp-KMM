@@ -1,5 +1,6 @@
 package com.randev.data.datasource.remote
 
+import com.randev.data.response.movie_credits.MovieCreditsResponse
 import com.randev.data.response.movie_details.MovieDetailResponse
 import com.randev.data.response.movie_list.MovieResponse
 
@@ -10,5 +11,7 @@ import com.randev.data.response.movie_list.MovieResponse
 
 interface MovieApiClient {
     suspend fun fetchMovie(page: Int): MovieResponse
+    suspend fun fetchMovieUpcoming(): MovieResponse
     suspend fun fetchMovieDetail(movieId: Int): MovieDetailResponse
+    suspend fun fetchMovieCredits(movieId: Int): MovieCreditsResponse
 }

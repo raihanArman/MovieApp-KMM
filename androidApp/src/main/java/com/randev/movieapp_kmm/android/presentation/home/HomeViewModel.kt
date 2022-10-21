@@ -6,18 +6,26 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.randev.core.wrapper.Resource
+import com.randev.domain.model.movie_detail.MovieDetailModel
 import com.randev.domain.model.movie_list.DataMovieModel
+import com.randev.domain.model.movie_list.MovieModel
+import com.randev.domain.usecase.GetMovieUpcomingUseCase
 import com.randev.domain.usecase.GetMovieUseCase
 import com.randev.navigation.AppNavigator
 import com.randev.navigation.Destination
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,7 +37,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val appNavigator: AppNavigator,
-    private val useCase: GetMovieUseCase,
+    private val movieUseCase: GetMovieUseCase,
+    private val upcomingUseCase: GetMovieUpcomingUseCase
 ): ViewModel() {
     private val _observeMovieState = MutableStateFlow(HomeState())
     val observeMovieState: StateFlow<HomeState> = _observeMovieState
@@ -37,9 +46,13 @@ class HomeViewModel(
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    val moviesPagination: Flow<PagingData<DataMovieModel>> = Pager(PagingConfig(pageSize = 20)) {
-        HomeDataSource(useCase)
-    }.flow.cachedIn(viewModelScope)
+//    val moviesPagination: Flow<PagingData<DataMovieModel>> = Pager(PagingConfig(pageSize = 20)) {
+//        HomeDataSource(movieUseCase)
+//    }.flow.cachedIn(viewModelScope)
+
+    init {
+        getMovie()
+    }
 
     fun onNavigateToDetailsClicked(id: Int) {
         appNavigator.tryNavigateTo(
@@ -49,27 +62,30 @@ class HomeViewModel(
         )
     }
 
-    private fun getMovie(){
-        viewModelScope.launch {
-            useCase.invoke().onEach { viewState ->
-                when(viewState) {
+
+
+
+    private fun getMovie() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            combine(
+                movieUseCase.invoke(1).onStart { emit(Resource.Idle()) },
+                upcomingUseCase.invoke().onStart { emit(Resource.Idle()) },
+                ::Pair
+            ).collect { movieState ->
+                when(movieState.first) {
                     is Resource.Error -> {
                         _observeMovieState.update {
                             it.copy(
                                 isLoading = false,
-                                errorMessage = viewState.errorMessage
+                                errorMessage = (movieState.first as Resource.Error).errorMessage
                             )
                         }
-                        _eventFlow.emit(
-                            UIEvent.ShowSnackbar(
-                                viewState.errorMessage ?: "Unknown error"
-                            )
-                        )
                     }
                     is Resource.Success -> {
                         _observeMovieState.update {
                             it.copy(
-                                movieList = viewState.model?.results ?: emptyList(),
+                                movieList = (movieState.first as Resource.Success<MovieModel>).model?.results,
                                 isLoading = false
                             )
                         }
@@ -83,9 +99,75 @@ class HomeViewModel(
                     }
                     else -> {}
                 }
-            }.stateIn(this, SharingStarted.Eagerly, Resource.Idle())
+
+                when(movieState.second) {
+                    is Resource.Error -> {
+                        _observeMovieState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = (movieState.second as Resource.Error).errorMessage
+                            )
+                        }
+                    }
+                    is Resource.Success -> {
+                        _observeMovieState.update {
+                            it.copy(
+                                upcomingList = (movieState.second as Resource.Success<MovieModel>).model?.results,
+                                isLoading = false
+                            )
+                        }
+                    }
+                    is Resource.Loading -> {
+                        _observeMovieState.update {
+                            it.copy(
+                                isLoading = true,
+                            )
+                        }
+                    }
+                    else -> {}
+                }
+
+            }
         }
     }
+
+//    private fun getMovie(){
+//        viewModelScope.launch {
+//            useCase.invoke().onEach { viewState ->
+//                when(viewState) {
+//                    is Resource.Error -> {
+//                        _observeMovieState.update {
+//                            it.copy(
+//                                isLoading = false,
+//                                errorMessage = viewState.errorMessage
+//                            )
+//                        }
+//                        _eventFlow.emit(
+//                            UIEvent.ShowSnackbar(
+//                                viewState.errorMessage ?: "Unknown error"
+//                            )
+//                        )
+//                    }
+//                    is Resource.Success -> {
+//                        _observeMovieState.update {
+//                            it.copy(
+//                                movieList = viewState.model?.results ?: emptyList(),
+//                                isLoading = false
+//                            )
+//                        }
+//                    }
+//                    is Resource.Loading -> {
+//                        _observeMovieState.update {
+//                            it.copy(
+//                                isLoading = true,
+//                            )
+//                        }
+//                    }
+//                    else -> {}
+//                }
+//            }.stateIn(this, SharingStarted.Eagerly, Resource.Idle())
+//        }
+//    }
 
     sealed class UIEvent{
         data class ShowSnackbar(val message: String): UIEvent()
