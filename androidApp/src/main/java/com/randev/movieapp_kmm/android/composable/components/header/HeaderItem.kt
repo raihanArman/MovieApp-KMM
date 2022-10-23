@@ -1,6 +1,7 @@
 package com.randev.movieapp_kmm.android.presentation.home.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -40,13 +41,14 @@ fun HeaderItem(
             fontSize = 24.sp
         )
         TextButton(
-            onClick = onClickMore
+            onClick = onClickMore,
+            contentPadding = PaddingValues(0.dp)
         ) {
             Text(
                 text = "See more",
                 color = MovieAppTheme.colors.colorAccent,
                 style = MovieAppTheme.typography.medium,
-                fontSize = 16.sp
+                fontSize = 14.sp
             )
         }
     }

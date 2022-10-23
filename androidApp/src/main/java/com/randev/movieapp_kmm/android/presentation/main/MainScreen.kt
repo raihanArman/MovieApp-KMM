@@ -13,6 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
 import com.randev.movieapp_kmm.android.presentation.detail.DetailScreen
 import com.randev.movieapp_kmm.android.presentation.home.HomeScreen
+import com.randev.movieapp_kmm.android.presentation.more_popular.MorePopularScreen
+import com.randev.movieapp_kmm.android.presentation.more_upcoming.MoreUpcomingScreen
+import com.randev.movieapp_kmm.android.presentation.search.SearchScreen
 import com.randev.navigation.Destination
 import com.randev.navigation.NavHostApp
 import com.randev.navigation.NavigationIntent
@@ -51,6 +54,15 @@ fun MainScreen(
                 }
                 composable(destination = Destination.DetailsScreen) {
                     DetailScreen()
+                }
+                composable(destination = Destination.MoreUpcomingScreen) {
+                    MoreUpcomingScreen()
+                }
+                composable(destination = Destination.MorePopularScreen) {
+                    MorePopularScreen()
+                }
+                composable(destination = Destination.SearchScreen) {
+                    SearchScreen()
                 }
             }
         }

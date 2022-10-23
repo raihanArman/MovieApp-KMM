@@ -11,7 +11,8 @@ import com.randev.data.response.movie_list.MovieResponse
 
 interface MovieApiClient {
     suspend fun fetchMovie(page: Int): MovieResponse
-    suspend fun fetchMovieUpcoming(): MovieResponse
+    suspend fun fetchMovieUpcoming(page: Int): MovieResponse
     suspend fun fetchMovieDetail(movieId: Int): MovieDetailResponse
     suspend fun fetchMovieCredits(movieId: Int): MovieCreditsResponse
+    suspend fun fetchMovieSearch(query: String, page: Int): MovieResponse
 }

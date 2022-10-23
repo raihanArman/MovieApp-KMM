@@ -46,10 +46,6 @@ class HomeViewModel(
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-//    val moviesPagination: Flow<PagingData<DataMovieModel>> = Pager(PagingConfig(pageSize = 20)) {
-//        HomeDataSource(movieUseCase)
-//    }.flow.cachedIn(viewModelScope)
-
     init {
         getMovie()
     }
@@ -62,15 +58,23 @@ class HomeViewModel(
         )
     }
 
+    fun onNavigateToMoreUpcoming() {
+        appNavigator.tryNavigateTo(Destination.MoreUpcomingScreen.fullRoute)
+    }
 
+    fun onNavigateToMorePopular() {
+        appNavigator.tryNavigateTo(Destination.MorePopularScreen.fullRoute)
+    }
 
+    fun onNavigateToSearch() {
+        appNavigator.tryNavigateTo(Destination.SearchScreen.fullRoute)
+    }
 
     private fun getMovie() {
-
         viewModelScope.launch(Dispatchers.IO) {
             combine(
                 movieUseCase.invoke(1).onStart { emit(Resource.Idle()) },
-                upcomingUseCase.invoke().onStart { emit(Resource.Idle()) },
+                upcomingUseCase.invoke(1).onStart { emit(Resource.Idle()) },
                 ::Pair
             ).collect { movieState ->
                 when(movieState.first) {
@@ -130,44 +134,6 @@ class HomeViewModel(
             }
         }
     }
-
-//    private fun getMovie(){
-//        viewModelScope.launch {
-//            useCase.invoke().onEach { viewState ->
-//                when(viewState) {
-//                    is Resource.Error -> {
-//                        _observeMovieState.update {
-//                            it.copy(
-//                                isLoading = false,
-//                                errorMessage = viewState.errorMessage
-//                            )
-//                        }
-//                        _eventFlow.emit(
-//                            UIEvent.ShowSnackbar(
-//                                viewState.errorMessage ?: "Unknown error"
-//                            )
-//                        )
-//                    }
-//                    is Resource.Success -> {
-//                        _observeMovieState.update {
-//                            it.copy(
-//                                movieList = viewState.model?.results ?: emptyList(),
-//                                isLoading = false
-//                            )
-//                        }
-//                    }
-//                    is Resource.Loading -> {
-//                        _observeMovieState.update {
-//                            it.copy(
-//                                isLoading = true,
-//                            )
-//                        }
-//                    }
-//                    else -> {}
-//                }
-//            }.stateIn(this, SharingStarted.Eagerly, Resource.Idle())
-//        }
-//    }
 
     sealed class UIEvent{
         data class ShowSnackbar(val message: String): UIEvent()

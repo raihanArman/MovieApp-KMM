@@ -64,10 +64,10 @@ class MovieRepositoryImpl(
         }.asFlow()
     }
 
-    override suspend fun getMovieUpcoming(): Flow<Resource<MovieModel>> {
+    override suspend fun getMovieUpcoming(page: Int): Flow<Resource<MovieModel>> {
         return object : NetworkResource<MovieModel>() {
             override suspend fun remoteFetch(): MovieModel {
-                val request = api.fetchMovieUpcoming()
+                val request = api.fetchMovieUpcoming(page)
                 return mapper.map(request)
             }
         }.asFlow()

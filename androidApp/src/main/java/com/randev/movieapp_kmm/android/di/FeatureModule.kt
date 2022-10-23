@@ -3,6 +3,9 @@ package com.randev.movieapp_kmm.android.di
 import com.randev.movieapp_kmm.android.presentation.detail.DetailViewModel
 import com.randev.movieapp_kmm.android.presentation.home.HomeViewModel
 import com.randev.movieapp_kmm.android.presentation.main.MainViewModel
+import com.randev.movieapp_kmm.android.presentation.more_popular.MorePopularViewModel
+import com.randev.movieapp_kmm.android.presentation.more_upcoming.MoreUpcomingViewModel
+import com.randev.movieapp_kmm.android.presentation.search.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -22,4 +25,7 @@ val featureModule = module {
             creditsUseCase = get()
         )
     }
+    viewModel { MoreUpcomingViewModel(get(), get()) }
+    viewModel { MorePopularViewModel(get(), get()) }
+    viewModel { SearchViewModel(get(), get()) }
 }

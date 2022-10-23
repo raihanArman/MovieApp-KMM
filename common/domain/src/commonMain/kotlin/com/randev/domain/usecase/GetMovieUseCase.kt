@@ -15,6 +15,6 @@ class GetMovieUseCase(
     private val repository: MovieRepository
 ): FlowUseCase<Int?, MovieModel>(){
     override suspend fun execute(parameters: Int?): Flow<Resource<MovieModel>> {
-        return repository.getMovie(parameters ?: 0)
+        return repository.getMovie(parameters ?: 1)
     }
 }

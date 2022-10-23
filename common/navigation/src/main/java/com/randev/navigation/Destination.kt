@@ -24,6 +24,10 @@ sealed class Destination(protected val route: String, vararg params: String) {
             MOVIE_ID_KEY to movieId
         )
     }
+
+    object MoreUpcomingScreen : NoArgumentsDestination("upcoming")
+    object MorePopularScreen : NoArgumentsDestination("popular")
+    object SearchScreen : NoArgumentsDestination("search")
 }
 
 

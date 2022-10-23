@@ -13,5 +13,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
     suspend fun getMovie(page: Int): Flow<Resource<MovieModel>>
-    suspend fun getMovieUpcoming(): Flow<Resource<MovieModel>>
+    suspend fun getMovieUpcoming(page: Int): Flow<Resource<MovieModel>>
 }

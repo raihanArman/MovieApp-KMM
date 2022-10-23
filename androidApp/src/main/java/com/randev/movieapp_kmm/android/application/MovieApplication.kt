@@ -2,7 +2,6 @@ package com.randev.movieapp_kmm.android.application
 
 import android.app.Application
 import com.randev.movieapp_kmm.android.di.featureModule
-import com.randev.movieapp_kmm.android.utils.ContextProvider
 import com.randev.movieapp_kmm.initKoin
 import com.randev.navigation.navigatorModule
 import org.koin.android.ext.koin.androidContext
@@ -26,8 +25,6 @@ class MovieApplication: Application() {
                 navigatorModule,
                 featureModule,
             )
-
-            ContextProvider.instance.initialize(applicationContext)
         }
     }
 }

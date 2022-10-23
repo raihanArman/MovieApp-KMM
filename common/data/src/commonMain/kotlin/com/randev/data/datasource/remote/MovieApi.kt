@@ -27,9 +27,10 @@ class MovieApi(
         }.body()
     }
 
-    override suspend fun fetchMovieUpcoming(): MovieResponse {
+    override suspend fun fetchMovieUpcoming(page: Int): MovieResponse {
         return ktor.get("3/movie/upcoming") {
             parameter("api_key", API_KEY)
+            parameter("page", page)
         }.body()
     }
 
@@ -42,6 +43,14 @@ class MovieApi(
     override suspend fun fetchMovieCredits(movieId: Int): MovieCreditsResponse {
         return ktor.get("3/movie/$movieId/credits") {
             parameter("api_key", API_KEY)
+        }.body()
+    }
+
+    override suspend fun fetchMovieSearch(query: String, page: Int): MovieResponse {
+        return ktor.get("3/search/movie") {
+            parameter("api_key", API_KEY)
+            parameter("page", page)
+            parameter("query", query)
         }.body()
     }
 }
