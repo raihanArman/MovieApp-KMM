@@ -37,6 +37,7 @@ class MovieApi(
     override suspend fun fetchMovieDetail(movieId: Int): MovieDetailResponse {
         return ktor.get("3/movie/$movieId") {
             parameter("api_key", API_KEY)
+            parameter("append_to_response", "videos,images")
         }.body()
     }
 

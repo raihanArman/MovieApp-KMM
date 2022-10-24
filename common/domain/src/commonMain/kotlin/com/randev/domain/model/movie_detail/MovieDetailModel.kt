@@ -23,10 +23,21 @@ data class MovieDetailModel(
     val title: String,
     val voteAverage: Double,
     val voteCount: Int,
-    var isFavorite: Boolean = false
+    var isFavorite: Boolean = false,
+    val images: List<ImageModel?>,
+    val videos: List<VideoModel?>
 )
 
 data class GenreModel(
     val id: Int,
     val name: String
+)
+
+data class ImageModel(
+    val url: String
+)
+
+data class VideoModel(
+    val id: String,
+    val key: String
 )

@@ -1,6 +1,10 @@
 package com.randev.movieapp_kmm.android.presentation.detail
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +22,7 @@ import com.randev.navigation.Destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -46,6 +51,8 @@ class DetailViewModel(
     private val _observeDetailState: MutableStateFlow<DetailState> = MutableStateFlow(DetailState())
     val observeDetailState: StateFlow<DetailState> = _observeDetailState
 
+    var isFavoriteMovie by mutableStateOf(false)
+
     init {
         movieId = stateHandle.get<String>(Destination.DetailsScreen.MOVIE_ID_KEY) ?: ""
         movieId?.let {
@@ -55,14 +62,9 @@ class DetailViewModel(
 
     fun insertDeleteFavorite(movieDetailModel: MovieDetailModel) {
         viewModelScope.launch {
-
-            if(movieDetailModel.isFavorite) {
-                deleteFavoriteUseCase.invoke(movieDetailModel.id).collect {
-                    _observeDetailState.update {
-                        it.copy(
-                            isFavorite = false
-                        )
-                    }
+            if(isFavoriteMovie) {
+                deleteFavoriteUseCase.invoke(movieDetailModel.id).collectLatest {
+                    isFavoriteMovie = false
                 }
             }else {
                 insertFavoriteUseCase.invoke(
@@ -73,12 +75,8 @@ class DetailViewModel(
                         overview = movieDetailModel.overview,
                         releaseDate = movieDetailModel.releaseDate
                     )
-                ).collect {
-                    _observeDetailState.update {
-                        it.copy(
-                            isFavorite = true
-                        )
-                    }
+                ).collectLatest {
+                    isFavoriteMovie = true
                 }
             }
         }
@@ -106,9 +104,9 @@ class DetailViewModel(
                             it.copy(
                                 movieDetail = data,
                                 isLoading = false,
-                                isFavorite = data?.isFavorite ?: false
                             )
                         }
+                        isFavoriteMovie = data?.isFavorite ?: false
                     }
                     is Resource.Loading -> {
                         _observeDetailState.update {

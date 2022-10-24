@@ -52,6 +52,9 @@ dependencies {
     implementation("androidx.compose.material:material:1.2.1")
     implementation("androidx.activity:activity-compose:1.5.1")
 
+    //Accompanist
+    implementation("com.google.accompanist:accompanist-flowlayout:0.23.1")
+
     //Paging
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 

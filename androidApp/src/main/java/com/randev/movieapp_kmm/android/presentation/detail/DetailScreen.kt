@@ -37,7 +37,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,6 +47,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.flowlayout.FlowRow
 import com.randev.domain.model.movie_detail.MovieDetailModel
 import com.randev.movieapp_kmm.android.composable.components.image.BaseImageView
 import com.randev.movieapp_kmm.android.composable.components.progressCircular.ProgressCircularComponent
@@ -53,6 +56,9 @@ import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
 import com.randev.movieapp_kmm.android.presentation.detail.components.CastItem
 import com.randev.movieapp_kmm.android.presentation.detail.components.GenreItem
 import com.randev.movieapp_kmm.android.composable.components.card.BASE_URL_BACKDROP_IMAGE
+import com.randev.movieapp_kmm.android.composable.components.card.PhotoItem
+import com.randev.movieapp_kmm.android.composable.components.favorite.FavoriteIcon
+import com.randev.movieapp_kmm.android.composable.components.space.HorizontalSpacer
 import com.randev.movieapp_kmm.android.utils.currentSheetFraction
 import org.koin.androidx.compose.getViewModel
 
@@ -66,6 +72,7 @@ fun DetailScreen(
     viewModel: DetailViewModel = getViewModel()
 ) {
     val detailState by viewModel.observeDetailState.collectAsState()
+    val isFavorite = viewModel.isFavoriteMovie
 
     Box(
         modifier = Modifier
@@ -77,7 +84,8 @@ fun DetailScreen(
             onCloseClicked = { viewModel.onBackButtonClicked() },
             onClickFavorite = {
                 viewModel.insertDeleteFavorite(it)
-            }
+            },
+            isFavorite = isFavorite
         )
     }
 }
@@ -88,7 +96,8 @@ fun ContentMovieDetail(
     modifier: Modifier = Modifier,
     state: DetailState,
     onCloseClicked: () -> Unit,
-    onClickFavorite: (MovieDetailModel) -> Unit
+    onClickFavorite: (MovieDetailModel) -> Unit,
+    isFavorite: Boolean
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
@@ -115,7 +124,8 @@ fun ContentMovieDetail(
         sheetContent = {
             BottomSheetContent(
                 state = state,
-                onClickFavorite = onClickFavorite
+                onClickFavorite = onClickFavorite,
+                isFavorite = isFavorite
             )
         },
         content = {
@@ -137,7 +147,7 @@ fun WrappedColumn(
 }
 
 @Composable
-fun BottomSheetContent(state: DetailState, onClickFavorite: (MovieDetailModel) -> Unit) {
+fun BottomSheetContent(state: DetailState, onClickFavorite: (MovieDetailModel) -> Unit, isFavorite: Boolean) {
     println("State -> $state")
     WrappedColumn(
         modifier = Modifier
@@ -150,27 +160,27 @@ fun BottomSheetContent(state: DetailState, onClickFavorite: (MovieDetailModel) -
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                verticalAlignment = Alignment.Top
             ) {
                 Text(
+                    modifier = Modifier
+                        .weight(1f),
                     text = data.originalTitle,
                     style = MovieAppTheme.typography.bold,
                     fontSize = 20.sp,
                     color = Color.Black
                 )
-                IconButton(
+                HorizontalSpacer(width = 30.dp)
+                FavoriteIcon(
                     modifier = Modifier
-                        .size(24.dp)
-                        .padding(0.dp),
-                    onClick = {
-                        onClickFavorite(data)
-                    }
-                ) {
-                    Icon(
-                        imageVector = if(state.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder ,
-                        contentDescription = null
-                    )
-                }
+                        .size(30.dp),
+                    onClickFavorite = {
+                        println("Favorite -> click")
+                        onClickFavorite(it)
+                    },
+                    data = data,
+                    isFavorite = isFavorite
+                )
             }
             VerticalSpacer(height = 20.dp)
             Text(
@@ -194,12 +204,13 @@ fun BottomSheetContent(state: DetailState, onClickFavorite: (MovieDetailModel) -
                 color = Color.Black
             )
             VerticalSpacer(height = 10.dp)
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            FlowRow(
+                mainAxisSpacing = 10.dp,
+                crossAxisSpacing = 10.dp
             ) {
-                items(data.genres) {
-                    it?.let {
-                        GenreItem(genre = it)
+                data.genres.forEach {
+                    it?.let { genre ->
+                        GenreItem(genre = genre)
                     }
                 }
             }
@@ -219,6 +230,28 @@ fun BottomSheetContent(state: DetailState, onClickFavorite: (MovieDetailModel) -
             ) {
                 items(casts) {
                     CastItem(cast = it)
+                }
+            }
+        }
+
+        state.movieDetail?.images?.let { images ->
+            if(images.isNotEmpty()) {
+                VerticalSpacer(height = 20.dp)
+                Text(
+                    text = "Photos",
+                    style = MovieAppTheme.typography.bold,
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
+                VerticalSpacer(height = 10.dp)
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(images) { image ->
+                        image?.let {
+                            PhotoItem(url = it.url)
+                        }
+                    }
                 }
             }
         }
@@ -254,7 +287,8 @@ fun BackgroundContent(
             )
 
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(25.dp)
             ) {
                 Surface(

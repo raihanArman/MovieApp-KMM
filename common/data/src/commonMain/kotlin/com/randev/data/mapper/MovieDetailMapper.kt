@@ -3,7 +3,9 @@ package com.randev.data.mapper
 import com.randev.core.arch.BaseMapper
 import com.randev.data.response.movie_details.MovieDetailResponse
 import com.randev.domain.model.movie_detail.GenreModel
+import com.randev.domain.model.movie_detail.ImageModel
 import com.randev.domain.model.movie_detail.MovieDetailModel
+import com.randev.domain.model.movie_detail.VideoModel
 
 /**
  * @author Raihan Arman
@@ -33,10 +35,25 @@ fun MovieDetailResponse.mapToModel() = MovieDetailModel(
     status = this.status.orEmpty(),
     title = this.title.orEmpty(),
     voteAverage = this.voteAverage ?: 0.0,
-    voteCount = this.voteCount ?: 0
+    voteCount = this.voteCount ?: 0,
+    images = this.images?.backdrops?.map {
+        it?.mapToModel()
+    } ?: emptyList(),
+    videos = this.videos?.results?.map {
+        it?.mapToModel()
+    } ?: emptyList()
 )
 
 fun MovieDetailResponse.Genre.mapToModel() = GenreModel(
     id = this.id ?: 0,
     name = this.name.orEmpty()
+)
+
+fun MovieDetailResponse.Images.Backdrop?.mapToModel() = ImageModel(
+    url = this?.filePath.orEmpty()
+)
+
+fun MovieDetailResponse.Videos.Result?.mapToModel() = VideoModel(
+    id = this?.id.orEmpty(),
+    key = this?.key.orEmpty()
 )

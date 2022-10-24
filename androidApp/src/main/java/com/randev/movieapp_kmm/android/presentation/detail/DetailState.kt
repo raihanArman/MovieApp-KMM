@@ -13,7 +13,6 @@ data class DetailState(
     val castList: List<CastModel> ?= emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val isFavorite: Boolean = false
 ) {
     companion object {
         fun empty() = DetailState(
@@ -21,7 +20,6 @@ data class DetailState(
             castList =  emptyList(),
             isLoading = false,
             errorMessage = null,
-            isFavorite = false
         )
     }
 }

@@ -37,12 +37,12 @@ class SearchViewModel(
         delay(1000) //Debounce
         Log.d("SearchViewodel", ": query -> $it")
         getPagination(query = it)
-    }
+    }.cachedIn(viewModelScope)
 
     private fun getPagination(query: String): Flow<PagingData<DataMovieModel>> {
         return Pager(PagingConfig(pageSize = 20)) {
             SearchPagingSource(useCase, query)
-        }.flow.cachedIn(viewModelScope)
+        }.flow
     }
 
     fun updateSearchQuery(query: String){
