@@ -1,9 +1,6 @@
 package com.randev.movieapp_kmm.android.presentation.detail
 
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -33,6 +30,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
@@ -47,21 +45,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.rememberImagePainter
 import com.randev.domain.model.movie_detail.MovieDetailModel
-import com.randev.movieapp_kmm.android.R
 import com.randev.movieapp_kmm.android.composable.components.image.BaseImageView
 import com.randev.movieapp_kmm.android.composable.components.progressCircular.ProgressCircularComponent
 import com.randev.movieapp_kmm.android.composable.components.space.VerticalSpacer
 import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
 import com.randev.movieapp_kmm.android.presentation.detail.components.CastItem
 import com.randev.movieapp_kmm.android.presentation.detail.components.GenreItem
-import com.randev.movieapp_kmm.android.presentation.home.components.BASE_URL_BACKDROP_IMAGE
-import com.randev.movieapp_kmm.android.presentation.home.components.BASE_URL_IMAGE
+import com.randev.movieapp_kmm.android.composable.components.card.BASE_URL_BACKDROP_IMAGE
 import com.randev.movieapp_kmm.android.utils.currentSheetFraction
 import org.koin.androidx.compose.getViewModel
-import org.koin.androidx.compose.inject
 
 /**
  * @author Raihan Arman
@@ -79,9 +72,13 @@ fun DetailScreen(
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
-        ContentMovieDetail(state = detailState) {
-            viewModel.onBackButtonClicked()
-        }
+        ContentMovieDetail(
+            state = detailState,
+            onCloseClicked = { viewModel.onBackButtonClicked() },
+            onClickFavorite = {
+                viewModel.insertDeleteFavorite(it)
+            }
+        )
     }
 }
 
@@ -90,7 +87,8 @@ fun DetailScreen(
 fun ContentMovieDetail(
     modifier: Modifier = Modifier,
     state: DetailState,
-    onCloseClicked: () -> Unit
+    onCloseClicked: () -> Unit,
+    onClickFavorite: (MovieDetailModel) -> Unit
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
@@ -117,6 +115,7 @@ fun ContentMovieDetail(
         sheetContent = {
             BottomSheetContent(
                 state = state,
+                onClickFavorite = onClickFavorite
             )
         },
         content = {
@@ -138,8 +137,8 @@ fun WrappedColumn(
 }
 
 @Composable
-fun BottomSheetContent(state: DetailState) {
-
+fun BottomSheetContent(state: DetailState, onClickFavorite: (MovieDetailModel) -> Unit) {
+    println("State -> $state")
     WrappedColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -163,10 +162,12 @@ fun BottomSheetContent(state: DetailState) {
                     modifier = Modifier
                         .size(24.dp)
                         .padding(0.dp),
-                    onClick = {}
+                    onClick = {
+                        onClickFavorite(data)
+                    }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Favorite,
+                        imageVector = if(state.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder ,
                         contentDescription = null
                     )
                 }

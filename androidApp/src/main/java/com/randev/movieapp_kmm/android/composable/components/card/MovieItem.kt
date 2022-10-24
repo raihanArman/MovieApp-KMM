@@ -1,4 +1,4 @@
-package com.randev.movieapp_kmm.android.presentation.home.components
+package com.randev.movieapp_kmm.android.composable.components.card
 
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -35,16 +35,17 @@ const val BASE_URL_BACKDROP_IMAGE = "https://image.tmdb.org/t/p/w1280"
 @Composable
 fun MovieItem(
     modifier: Modifier = Modifier,
-    data: DataMovieModel,
+    id: () -> Int,
+    image: () -> String,
+    title: () -> String,
     onClick: (Int) -> Unit,
 ) {
-    Log.d("MovieItem", "MovieItem: $data")
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(250.dp)
             .clickable {
-                onClick(data.id)
+                onClick(id.invoke())
             },
         elevation = 0.dp,
         shape = Shapes.small,
@@ -56,7 +57,7 @@ fun MovieItem(
         ) {
             BaseImageView(
                 modifier = Modifier.fillMaxSize(),
-                url = BASE_URL_IMAGE + data.posterPath
+                url = BASE_URL_IMAGE + image.invoke()
             )
             Surface(
                 modifier = Modifier
@@ -64,7 +65,7 @@ fun MovieItem(
                 color = Color.Black.copy(alpha = 0.8f),
             ) {
                 Text(
-                    text = data.originalTitle,
+                    text = title.invoke(),
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .fillMaxWidth()

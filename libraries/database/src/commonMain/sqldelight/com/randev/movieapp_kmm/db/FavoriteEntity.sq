@@ -1,0 +1,34 @@
+CREATE TABLE FavoriteEntity(
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    poster TEXT NOT NULL,
+    overview TEXT NOT NULL,
+    releaseDate TEXT NOT NULL
+);
+
+selectFavoriteAll:
+SELECT *
+FROM FavoriteEntity;
+
+selectFavoriteById:
+SELECT *
+FROM FavoriteEntity WHERE id=:id;
+
+insertItem:
+INSERT OR REPLACE INTO
+FavoriteEntity(id, title, poster, overview, releaseDate)
+VALUES (?, ?, ?, ?, ?);
+
+deleteFavoriteById:
+DELETE FROM FavoriteEntity WHERE id=:id;
+
+deleteFavoriteAll:
+DELETE FROM FavoriteEntity;
+
+selectLastInsertedRowId:
+SELECT last_insert_rowid();
+
+selectChanges:
+SELECT changes();
+
+

@@ -25,7 +25,7 @@ import com.randev.domain.model.movie_list.DataMovieModel
 import com.randev.movieapp_kmm.android.composable.components.app_bar.SearchAppBar
 import com.randev.movieapp_kmm.android.composable.components.progressCircular.ProgressCircularComponent
 import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
-import com.randev.movieapp_kmm.android.presentation.home.components.MovieItem
+import com.randev.movieapp_kmm.android.composable.components.card.MovieItem
 import com.randev.movieapp_kmm.android.utils.items
 import org.koin.androidx.compose.getViewModel
 
@@ -83,7 +83,11 @@ fun ContentSearch(
     ) {
         items(data) { movie ->
             movie?.let {
-                MovieItem(data = it) {
+                MovieItem(
+                    id = { it.id },
+                    image = { it.posterPath },
+                    title = { it.title }
+                ) {
                     onClickMovie(movie.id)
                 }
             }
@@ -114,21 +118,3 @@ fun ContentSearch(
     }
 }
 
-@Composable
-fun EmptyScreen(
-    modifier: Modifier = Modifier,
-    query: String
-) {
-    Box(
-        modifier = modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Result \"$query\" is empty",
-            color = Color.Gray,
-            style = MovieAppTheme.typography.light,
-            fontSize = 18.sp
-        )
-    }
-}

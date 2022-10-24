@@ -1,6 +1,7 @@
 package com.randev.movieapp_kmm.android.di
 
 import com.randev.movieapp_kmm.android.presentation.detail.DetailViewModel
+import com.randev.movieapp_kmm.android.presentation.favorite.FavoriteViewModel
 import com.randev.movieapp_kmm.android.presentation.home.HomeViewModel
 import com.randev.movieapp_kmm.android.presentation.main.MainViewModel
 import com.randev.movieapp_kmm.android.presentation.more_popular.MorePopularViewModel
@@ -22,10 +23,13 @@ val featureModule = module {
             appNavigator = get(),
             stateHandle = params.get(),
             detailUseCase = get(),
-            creditsUseCase = get()
+            creditsUseCase = get(),
+            insertFavoriteUseCase = get(),
+            deleteFavoriteUseCase = get()
         )
     }
     viewModel { MoreUpcomingViewModel(get(), get()) }
     viewModel { MorePopularViewModel(get(), get()) }
     viewModel { SearchViewModel(get(), get()) }
+    viewModel { FavoriteViewModel(get(), get()) }
 }

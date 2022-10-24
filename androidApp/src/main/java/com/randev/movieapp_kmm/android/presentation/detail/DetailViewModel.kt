@@ -7,8 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.randev.core.wrapper.Resource
 import com.randev.domain.model.movie_credits.MovieCreditsModel
 import com.randev.domain.model.movie_detail.MovieDetailModel
+import com.randev.domain.usecase.DeleteFavoriteUseCase
+import com.randev.domain.usecase.FavoriteParams
 import com.randev.domain.usecase.GetMovieCreditsUseCase
 import com.randev.domain.usecase.GetMovieDetailUseCase
+import com.randev.domain.usecase.InsertFavoriteUseCase
 import com.randev.movieapp_kmm.android.presentation.home.HomeViewModel
 import com.randev.navigation.AppNavigator
 import com.randev.navigation.Destination
@@ -33,7 +36,9 @@ class DetailViewModel(
     private val appNavigator: AppNavigator,
     private val stateHandle: SavedStateHandle,
     private val detailUseCase: GetMovieDetailUseCase,
-    private val creditsUseCase: GetMovieCreditsUseCase
+    private val creditsUseCase: GetMovieCreditsUseCase,
+    private val insertFavoriteUseCase: InsertFavoriteUseCase,
+    private val deleteFavoriteUseCase: DeleteFavoriteUseCase
 ): ViewModel() {
 
     private var movieId: String ?= null
@@ -45,6 +50,37 @@ class DetailViewModel(
         movieId = stateHandle.get<String>(Destination.DetailsScreen.MOVIE_ID_KEY) ?: ""
         movieId?.let {
             getMovieDetail(it.toInt())
+        }
+    }
+
+    fun insertDeleteFavorite(movieDetailModel: MovieDetailModel) {
+        viewModelScope.launch {
+
+            if(movieDetailModel.isFavorite) {
+                deleteFavoriteUseCase.invoke(movieDetailModel.id).collect {
+                    _observeDetailState.update {
+                        it.copy(
+                            isFavorite = false
+                        )
+                    }
+                }
+            }else {
+                insertFavoriteUseCase.invoke(
+                    FavoriteParams(
+                        id = movieDetailModel.id.toLong(),
+                        title = movieDetailModel.title,
+                        poster = movieDetailModel.posterPath,
+                        overview = movieDetailModel.overview,
+                        releaseDate = movieDetailModel.releaseDate
+                    )
+                ).collect {
+                    _observeDetailState.update {
+                        it.copy(
+                            isFavorite = true
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -65,10 +101,12 @@ class DetailViewModel(
                         }
                     }
                     is Resource.Success -> {
+                        val data = (detailState.first as Resource.Success<MovieDetailModel>).model
                         _observeDetailState.update {
                             it.copy(
-                                movieDetail = (detailState.first as Resource.Success<MovieDetailModel>).model,
-                                isLoading = false
+                                movieDetail = data,
+                                isLoading = false,
+                                isFavorite = data?.isFavorite ?: false
                             )
                         }
                     }

@@ -14,4 +14,5 @@ actual fun databaseModule() = module {
         val driver = AndroidSqliteDriver(MovieDatabase.Schema, context = get(), "app.db")
         MovieDatabase(driver)
     }
+
 }

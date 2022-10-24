@@ -28,6 +28,7 @@ sealed class Destination(protected val route: String, vararg params: String) {
     object MoreUpcomingScreen : NoArgumentsDestination("upcoming")
     object MorePopularScreen : NoArgumentsDestination("popular")
     object SearchScreen : NoArgumentsDestination("search")
+    object FavoriteScreen : NoArgumentsDestination("favorite")
 }
 
 

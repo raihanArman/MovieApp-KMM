@@ -1,6 +1,5 @@
 package com.randev.movieapp_kmm.android.presentation.detail.components
 
-import android.text.Layout.Alignment
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,7 +18,7 @@ import com.randev.domain.model.movie_credits.CastModel
 import com.randev.movieapp_kmm.android.composable.components.image.BaseImageView
 import com.randev.movieapp_kmm.android.composable.components.space.VerticalSpacer
 import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
-import com.randev.movieapp_kmm.android.presentation.home.components.BASE_URL_IMAGE
+import com.randev.movieapp_kmm.android.composable.components.card.BASE_URL_IMAGE
 
 /**
  * @author Raihan Arman

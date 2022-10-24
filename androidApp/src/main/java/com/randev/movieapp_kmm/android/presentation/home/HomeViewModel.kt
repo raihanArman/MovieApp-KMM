@@ -70,6 +70,10 @@ class HomeViewModel(
         appNavigator.tryNavigateTo(Destination.SearchScreen.fullRoute)
     }
 
+    fun onNavigateToFavorite() {
+        appNavigator.tryNavigateTo(Destination.FavoriteScreen.fullRoute)
+    }
+
     private fun getMovie() {
         viewModelScope.launch(Dispatchers.IO) {
             combine(

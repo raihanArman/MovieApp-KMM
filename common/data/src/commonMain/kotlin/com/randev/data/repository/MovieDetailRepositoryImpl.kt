@@ -2,6 +2,7 @@ package com.randev.data.repository
 
 import com.randev.core.wrapper.NetworkResource
 import com.randev.core.wrapper.Resource
+import com.randev.data.datasource.local.FavoriteDataSource
 import com.randev.data.datasource.remote.MovieApi
 import com.randev.data.mapper.MovieCreditsMapper
 import com.randev.data.mapper.MovieDetailMapper
@@ -17,13 +18,17 @@ import kotlinx.coroutines.flow.Flow
 class MovieDetailRepositoryImpl(
     private val mapper: MovieDetailMapper,
     private val creditsMapper: MovieCreditsMapper,
-    private val api: MovieApi
+    private val api: MovieApi,
+    private val favoriteDataSource: FavoriteDataSource
 ): MovieDetailRepository {
     override suspend fun getMovieDetails(movieId: Int): Flow<Resource<MovieDetailModel>> {
         return object : NetworkResource<MovieDetailModel>() {
             override suspend fun remoteFetch(): MovieDetailModel {
                 val request = api.fetchMovieDetail(movieId)
-                return mapper.map(request)
+                return mapper.map(request).apply {
+                    val favorite = favoriteDataSource.getFavoriteById(id.toLong())
+                    isFavorite = favorite != null
+                }
             }
 
         }.asFlow()

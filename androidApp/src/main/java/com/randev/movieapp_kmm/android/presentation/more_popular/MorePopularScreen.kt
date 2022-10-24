@@ -16,7 +16,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.randev.domain.model.movie_list.DataMovieModel
 import com.randev.movieapp_kmm.android.composable.components.app_bar.AppBarCustom
 import com.randev.movieapp_kmm.android.composable.components.progressCircular.ProgressCircularComponent
-import com.randev.movieapp_kmm.android.presentation.home.components.MovieItem
+import com.randev.movieapp_kmm.android.composable.components.card.MovieItem
 import com.randev.movieapp_kmm.android.utils.items
 import org.koin.androidx.compose.getViewModel
 
@@ -62,7 +62,11 @@ fun ContentPopular(
     ) {
         items(data) { movie ->
             movie?.let {
-                MovieItem(data = it) {
+                MovieItem(
+                    id = { it.id },
+                    image = { it.posterPath },
+                    title = { it.title }
+                ) {
                     onClickMovie(movie.id)
                 }
             }

@@ -1,4 +1,4 @@
-package com.randev.movieapp_kmm.android.presentation.home.components
+package com.randev.movieapp_kmm.android.composable.components.card
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

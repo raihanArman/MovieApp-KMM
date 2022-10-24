@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.randev.domain.model.movie_list.DataMovieModel
+import com.randev.movieapp_kmm.android.composable.components.card.PopularItem
 import com.randev.movieapp_kmm.android.composable.components.space.VerticalSpacer
 
 /**

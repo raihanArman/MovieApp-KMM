@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.randev.movieapp_kmm.android.composable.style.MovieAppTheme
 import com.randev.movieapp_kmm.android.presentation.detail.DetailScreen
+import com.randev.movieapp_kmm.android.presentation.favorite.FavoriteScreen
 import com.randev.movieapp_kmm.android.presentation.home.HomeScreen
 import com.randev.movieapp_kmm.android.presentation.more_popular.MorePopularScreen
 import com.randev.movieapp_kmm.android.presentation.more_upcoming.MoreUpcomingScreen
@@ -63,6 +64,9 @@ fun MainScreen(
                 }
                 composable(destination = Destination.SearchScreen) {
                     SearchScreen()
+                }
+                composable(destination = Destination.FavoriteScreen) {
+                    FavoriteScreen()
                 }
             }
         }
